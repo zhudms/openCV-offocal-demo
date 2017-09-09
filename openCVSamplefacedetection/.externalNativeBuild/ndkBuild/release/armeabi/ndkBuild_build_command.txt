@@ -1,0 +1,16 @@
+Executable : /Users/rongyile/Library/Android/sdk/ndk-bundle/ndk-build
+arguments : 
+NDK_PROJECT_PATH=null
+APP_BUILD_SCRIPT=/Users/rongyile/Demo/jniDemo/face-detection4/openCVSamplefacedetection/src/main/jni/Android.mk
+NDK_APPLICATION_MK=/Users/rongyile/Demo/jniDemo/face-detection4/openCVSamplefacedetection/src/main/jni/Application.mk
+APP_ABI=armeabi
+NDK_ALL_ABIS=armeabi
+NDEBUG=0
+APP_PLATFORM=android-9
+NDK_OUT=/Users/rongyile/Demo/jniDemo/face-detection4/openCVSamplefacedetection/.externalNativeBuild/ndkBuild/release/obj
+NDK_LIBS_OUT=/Users/rongyile/Demo/jniDemo/face-detection4/openCVSamplefacedetection/build/intermediates/ndkBuild/release/lib
+APP_SHORT_COMMANDS=false
+LOCAL_SHORT_COMMANDS=false
+-n
+jvmArgs : 
+
