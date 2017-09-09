@@ -2,9 +2,6 @@
 #include <opencv2/core.hpp>
 #include <opencv2/objdetect.hpp>
 
-#include <string>
-#include <vector>
-
 #include <android/log.h>
 
 #define LOG_TAG "FaceDetection/DetectionBasedTracker"
