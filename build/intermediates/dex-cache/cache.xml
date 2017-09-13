@@ -3,12 +3,30 @@
 
     <item
         is-multidex="false"
+        jar="/Users/rongyile/Demo/jniDemo/face-detection4/openCVSamplefacedetection/build/intermediates/exploded-aar/com.orhanobut/logger/2.1.1/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.3"
+        sha1="f3da801940221b852f3a3ee82bfe2a10d39e4ffa">
+        <dex dex="/Users/rongyile/Demo/jniDemo/face-detection4/openCVSamplefacedetection/build/intermediates/pre-dexed/debug/com.orhanobut-logger-2.1.1_4d532efe2b9ec350bf22d397912493b5b6cf9a03.jar" />
+    </item>
+    <item
+        is-multidex="false"
         jar="/Users/rongyile/Demo/jniDemo/face-detection4/openCVSamplefacedetection/build/intermediates/exploded-aar/face-detection4/openCVLibrary320/unspecified/jars/classes.jar"
         jumboMode="false"
         optimize="true"
         revision="25.0.3"
-        sha1="038e8806866760ccd8568b401b8052e937e4be1a">
+        sha1="007ebc8355e38e8e48a8081f3f3aff3e65527561">
         <dex dex="/Users/rongyile/Demo/jniDemo/face-detection4/openCVSamplefacedetection/build/intermediates/pre-dexed/debug/face-detection4-openCVLibrary320-unspecified_9c5e5d27e5cafd24ecadf9b6521d52fa6a7e66e6.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/Users/rongyile/.gradle/caches/modules-2/files-2.1/org.greenrobot/eventbus/3.0.0/ddd99896e9569eaababbe81b35d80e1b91c4ad85/eventbus-3.0.0.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.3"
+        sha1="ddd99896e9569eaababbe81b35d80e1b91c4ad85">
+        <dex dex="/Users/rongyile/Demo/jniDemo/face-detection4/openCVSamplefacedetection/build/intermediates/pre-dexed/debug/eventbus-3.0.0_ca787a5bff88da4ad804f6124e56bc9666dd5f7a.jar" />
     </item>
 
 </items>

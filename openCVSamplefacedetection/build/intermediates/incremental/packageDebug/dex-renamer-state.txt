@@ -1,4 +1,4 @@
-#Sat Sep 09 15:04:51 CST 2017
+#Wed Sep 13 11:42:20 CST 2017
 base.0=/Users/rongyile/Demo/jniDemo/face-detection4/openCVSamplefacedetection/build/intermediates/transforms/dex/debug/folders/1000/1f/main
 renamed.0=classes.dex
 file.0=/Users/rongyile/Demo/jniDemo/face-detection4/openCVSamplefacedetection/build/intermediates/transforms/dex/debug/folders/1000/1f/main/classes.dex

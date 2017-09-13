@@ -29,7 +29,7 @@ import android.view.SurfaceView;
  */
 public abstract class CameraBridgeViewBase extends SurfaceView implements SurfaceHolder.Callback {
 
-    private static final String TAG = "CameraBridge";
+    private static final String TAG = "asd";
     private static final int MAX_UNSPECIFIED = -1;
     private static final int STOPPED = 0;
     private static final int STARTED = 1;
@@ -380,6 +380,8 @@ public abstract class CameraBridgeViewBase extends SurfaceView implements Surfac
     }
 
     /**
+     * here on reconized?
+     *
      * This method shall be called by the subclasses when they have valid
      * object and want it to be delivered to external client (via callback) and
      * then displayed on the screen.
@@ -492,4 +494,5 @@ public abstract class CameraBridgeViewBase extends SurfaceView implements Surfac
 
         return new Size(calcWidth, calcHeight);
     }
+
 }
