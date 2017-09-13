@@ -231,18 +231,17 @@ public class FdActivity extends Activity implements CvCameraViewListener2 {
     }
 
     class TempFaces {
-        int x;
-        int y;
-        int width;
-        int height;
+        public int x;
+        public int y;
+        public int width;
+        public int height;
     }
 
-    TempFaces face = new TempFaces();
 
     public Mat onCameraFrame(CvCameraViewFrame inputFrame) {
 
         Log.d(TAG, "onCameraFrame: onframeonframe");
-
+        TempFaces face = new TempFaces();
         mRgba = inputFrame.rgba();
         mGray = inputFrame.gray();
 
@@ -277,38 +276,38 @@ public class FdActivity extends Activity implements CvCameraViewListener2 {
             Logger.d("face rect=" +
                     facesArray[i].tl().x + File.separator + facesArray[i].tl().y + File.separator +
                     facesArray[i].br().x + File.separator + facesArray[i].br().y + File.separator);
-//            if (i == 0) {
-//                face.x = facesArray[0].x;
-//                face.y = facesArray[0].y;
-//                face.width = facesArray[0].width;
-//                face.height = facesArray[0].height;
-//
-//            }
+            if (i == 0) {
+                face.x = facesArray[0].x;
+                face.y = facesArray[0].y;
+                face.width = facesArray[0].width;
+                face.height = facesArray[0].height;
+
+            }
 
         }
 
 //        有识别到人脸时
 if (facesArray!=null&&facesArray.length!=0){
-    Bitmap mCacheBitmap = Bitmap.createBitmap(surfaceViewW, surfaceViewH, Bitmap.Config.ARGB_8888);
-//        Bitmap tempBitmap = Bitmap.createBitmap(faces.width(), faces.height(), Bitmap.Config.ARGB_8888);
+        Bitmap mCacheBitmap = Bitmap.createBitmap(surfaceViewW, surfaceViewH, Bitmap.Config.ARGB_8888);
+        Bitmap tempBitmap = Bitmap.createBitmap(face.width, face.height, Bitmap.Config.ARGB_8888);
 
-    boolean bmpValid = true;
-    if (mRgba != null) {
-        try {
-            Utils.matToBitmap(mRgba, mCacheBitmap);
-//                tempBitmap = Bitmap.createBitmap(mCacheBitmap, face.x, face.y, face.width, face.height);
+        boolean bmpValid = true;
+        if (mRgba != null) {
+            try {
+                Utils.matToBitmap(mRgba, mCacheBitmap);
+                tempBitmap = Bitmap.createBitmap(mCacheBitmap, face.x, face.y, face.width, face.height);
 
 
-        } catch (Exception e) {
+            } catch (Exception e) {
 
-            Log.e(TAG, "Bitmap type: " + mCacheBitmap.getWidth() + "*" + mCacheBitmap.getHeight());
-            Log.e(TAG, "Utils.matToBitmap() throws an exception: " + e.getMessage());
-            bmpValid = false;
+                Log.e(TAG, "Bitmap type: " + mCacheBitmap.getWidth() + "*" + mCacheBitmap.getHeight());
+                Log.e(TAG, "Utils.matToBitmap() throws an exception: " + e.getMessage());
+                bmpValid = false;
+            }
         }
-    }
 
-    EventBus.getDefault().post(new OnCallBack(mCacheBitmap));
-//        EventBus.getDefault().post(new OnCallBack(tempBitmap));
+//        EventBus.getDefault().post(new OnCallBack(mCacheBitmap));
+        EventBus.getDefault().post(new OnCallBack(tempBitmap));
 }
 
 
