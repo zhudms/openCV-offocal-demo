@@ -44,7 +44,6 @@ containing a value of this type.
         public static final int back=0x7f060001;
         public static final int fd_activity_surface_view=0x7f060003;
         public static final int front=0x7f060002;
-        public static final int image=0x7f060004;
     }
     public static final class layout {
         public static final int face_detect_surface_view=0x7f030000;

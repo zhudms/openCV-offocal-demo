@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -31,6 +32,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
+import android.hardware.Camera;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
@@ -65,13 +67,19 @@ public class FdActivity extends Activity implements CvCameraViewListener2 {
     private DetectionBasedTracker mNativeDetector;
 
     private int mDetectorType = JAVA_DETECTOR;
+    //    private int mDetectorType = NATIVE_DETECTOR;
     private String[] mDetectorName;
 
     private float mRelativeFaceSize = 0.2f;
     private int mAbsoluteFaceSize = 0;
 
+//    private MCameraBirdge mOpenCvCameraView;
     private CameraBridgeViewBase mOpenCvCameraView;
 
+    public static final int RECONIZE_LINE_WIDTH = 1;
+
+    private int surfaceViewW;
+    private int surfaceViewH;
 
     static {
         System.loadLibrary("opencv_java3");
@@ -129,8 +137,7 @@ public class FdActivity extends Activity implements CvCameraViewListener2 {
             }
         }
     };
-    private int surfaceViewW;
-    private int surfaceViewH;
+
 
     public FdActivity() {
         mDetectorName = new String[2];
@@ -154,6 +161,7 @@ public class FdActivity extends Activity implements CvCameraViewListener2 {
         mOpenCvCameraView = (CameraBridgeViewBase) findViewById(R.id.fd_activity_surface_view);
         mOpenCvCameraView.setVisibility(CameraBridgeViewBase.VISIBLE);
         mOpenCvCameraView.setCvCameraViewListener(this);
+//setPreSize();
         System.loadLibrary("detection_based_tracker");
         try {
             // load cascade file from application resources
@@ -191,6 +199,14 @@ public class FdActivity extends Activity implements CvCameraViewListener2 {
 
         Logger.addLogAdapter(new AndroidLogAdapter());
     }
+
+//    private void setPreSize() {
+//        Camera camera = Camera.open();
+//
+//        List<Camera.Size> pictureSizes = camera.getParameters().getSupportedPictureSizes();
+//        List<Camera.Size> previewSizes = camera.getParameters().getSupportedPreviewSizes();
+//        mOpenCvCameraView.calculateCameraFrameSize();
+//    }
 
     @Override
     public void onPause() {
@@ -257,25 +273,27 @@ public class FdActivity extends Activity implements CvCameraViewListener2 {
         MatOfRect faces = new MatOfRect();
 
         if (mDetectorType == JAVA_DETECTOR) {
+
             if (mJavaDetector != null)
                 mJavaDetector.detectMultiScale(mGray, faces, 1.1, 2, 2, // TODO: objdetect.CV_HAAR_SCALE_IMAGE
-                        new Size(mAbsoluteFaceSize, mAbsoluteFaceSize), new Size());
+                        new Size(mAbsoluteFaceSize, mAbsoluteFaceSize), new Size(10000, 10000));//应该是在这之前旋转。。。这该不会自己写矩阵转换吧。。。。
 
             Log.d(TAG, "onCameraFrame: mAbsoluteFaceSize=" + mAbsoluteFaceSize);
         } else if (mDetectorType == NATIVE_DETECTOR) {
-            if (mNativeDetector != null)//应该是在这之前旋转。。。这该不会自己写矩阵转换吧。。。。
+            if (mNativeDetector != null)
                 mNativeDetector.detect(mGray, faces);
         } else {
             Log.e(TAG, "Detection method is not selected!");
         }
 
         Rect[] facesArray = faces.toArray();
+//        待优化
         for (int i = 0; i < facesArray.length; i++) {
             Logger.d("face rect=" + i);
-            Imgproc.rectangle(mRgba, facesArray[i].tl(), facesArray[i].br(), FACE_RECT_COLOR, 18);
-            Logger.d("face rect=" +
-                    facesArray[i].tl().x + File.separator + facesArray[i].tl().y + File.separator +
-                    facesArray[i].br().x + File.separator + facesArray[i].br().y + File.separator);
+            Imgproc.rectangle(mRgba, facesArray[i].tl(), facesArray[i].br(), FACE_RECT_COLOR, RECONIZE_LINE_WIDTH);
+//            Logger.d("face rect=" +
+//                    facesArray[i].tl().x + File.separator + facesArray[i].tl().y + File.separator +
+//                    facesArray[i].br().x + File.separator + facesArray[i].br().y + File.separator);
             if (i == 0) {
                 face.x = facesArray[0].x;
                 face.y = facesArray[0].y;
@@ -287,28 +305,28 @@ public class FdActivity extends Activity implements CvCameraViewListener2 {
         }
 
 //        有识别到人脸时
-if (facesArray!=null&&facesArray.length!=0){
-        Bitmap mCacheBitmap = Bitmap.createBitmap(surfaceViewW, surfaceViewH, Bitmap.Config.ARGB_8888);
-        Bitmap tempBitmap = Bitmap.createBitmap(face.width, face.height, Bitmap.Config.ARGB_8888);
+        if (facesArray != null && facesArray.length != 0) {
+            Bitmap mCacheBitmap = Bitmap.createBitmap(surfaceViewW, surfaceViewH, Bitmap.Config.ARGB_8888);
+            Bitmap tempBitmap = Bitmap.createBitmap(face.width, face.height, Bitmap.Config.ARGB_8888);
 
-        boolean bmpValid = true;
-        if (mRgba != null) {
-            try {
-                Utils.matToBitmap(mRgba, mCacheBitmap);
-                tempBitmap = Bitmap.createBitmap(mCacheBitmap, face.x, face.y, face.width, face.height);
+            boolean bmpValid = true;
+            if (mRgba != null) {
+                try {
+                    Utils.matToBitmap(mRgba, mCacheBitmap);
+                    tempBitmap = Bitmap.createBitmap(mCacheBitmap, face.x + RECONIZE_LINE_WIDTH, face.y + RECONIZE_LINE_WIDTH, face.width - RECONIZE_LINE_WIDTH * 2, face.height - RECONIZE_LINE_WIDTH * 2);
 
 
-            } catch (Exception e) {
+                } catch (Exception e) {
 
-                Log.e(TAG, "Bitmap type: " + mCacheBitmap.getWidth() + "*" + mCacheBitmap.getHeight());
-                Log.e(TAG, "Utils.matToBitmap() throws an exception: " + e.getMessage());
-                bmpValid = false;
+                    Log.e(TAG, "Bitmap type: " + mCacheBitmap.getWidth() + "*" + mCacheBitmap.getHeight());
+                    Log.e(TAG, "Utils.matToBitmap() throws an exception: " + e.getMessage());
+                    bmpValid = false;
+                }
             }
-        }
 
 //        EventBus.getDefault().post(new OnCallBack(mCacheBitmap));
-        EventBus.getDefault().post(new OnCallBack(tempBitmap));
-}
+            EventBus.getDefault().post(new OnCallBack(tempBitmap));
+        }
 
 
         return mRgba;

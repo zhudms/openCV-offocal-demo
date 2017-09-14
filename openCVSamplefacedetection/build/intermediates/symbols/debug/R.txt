@@ -5,7 +5,6 @@ int id any 0x7f060000
 int id back 0x7f060001
 int id fd_activity_surface_view 0x7f060003
 int id front 0x7f060002
-int id image 0x7f060004
 int layout face_detect_surface_view 0x7f030000
 int raw lbpcascade_frontalface 0x7f040000
 int string app_name 0x7f050000
